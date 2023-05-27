@@ -20,4 +20,19 @@ export const reviewRouter = createTRPCRouter({
   get: protectedProcedure.input( z.object({ id: z.string() })).query(() => {
     return "you can now see this secret message!";
   }),
+  getFromUser: protectedProcedure
+    .input( z.object({
+      userId: z.string()
+    }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.review.findMany({
+        where: {
+          userId: input.userId
+        },
+        include: {
+          user: true,
+          game: true
+        }
+      })
+    })
 });

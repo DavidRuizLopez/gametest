@@ -1,6 +1,5 @@
 import { type Review } from '@prisma/client';
 import type { User, Vote } from '@prisma/client';
-import Link from 'next/link';
 
 
 export type ReviewView = (Review & {
