@@ -9,12 +9,10 @@ import ReviewComponent from "gametest/components/review";
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
-  const userSession = useSession()
+  const { data: userSession} = useSession()
 
   const { data: reviewData } = api.review.getAll.useQuery()
-  const { data: userData } = api.user.get.useQuery(userSession.data?.user.id)
 
-  console.log(reviewData?.map((review) => review.title))
 
   return (
     <>
@@ -56,8 +54,6 @@ const Home: NextPage = () => {
             <p className="text-2xl text-white">
               {hello.data ? hello.data.greeting : "Loading tRPC query..."}
             </p>
-
-            {reviewData?.map((revie) => ReviewComponent(revie))}
             <AuthShowcase />
           </div>
         </div>
