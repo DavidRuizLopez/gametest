@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { api } from "gametest/utils/api";
 import { useSession } from "next-auth/react";
 import TextField from '@mui/material/TextField';
 import { useState } from "react";
-import { Autocomplete, Button } from "@mui/material";
+import { Autocomplete } from "@mui/material";
 import { AuthShowcase } from "../navbar/Navbar";
 import { useRouter } from "next/router";
 
@@ -44,7 +43,7 @@ const CreateReview = () => {
         })
             .then((val) => alert(`La review ${val.title} ha sido creada`))
             .catch((err) => console.log(err))
-            .finally(() => router.push("/reviews").catch((err) => console.log(err)))
+            .finally(() => { return void router.push("/reviews").catch((err) => console.log(err))})
     }
 
     return (
@@ -61,7 +60,7 @@ const CreateReview = () => {
             <TextField id="time" label="Time" required={true} variant="standard" value={timeValue} type="number" onChange={(val) => setTimeValue(val.target.value)} />
             <Autocomplete
                 value={game}
-                onChange={(event: any, newValue: optionsGames | null) => {
+                onChange={(event, newValue: optionsGames | null) => {
                     setGame(newValue);
                 }}
                 id="controllable-states"
@@ -70,7 +69,7 @@ const CreateReview = () => {
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Games" />}
             />
-            <button className="bg-slate-950" onClick={() => createReview()} >hola cara cola</button>
+            <button className="bg-slate-950" onClick={() => void createReview().catch((err) => console.log(err))} >hola cara cola</button>
         </>
     )
 }

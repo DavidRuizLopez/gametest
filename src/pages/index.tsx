@@ -1,15 +1,13 @@
 import { type NextPage } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 import { api } from "gametest/utils/api";
 import ReviewCard from "gametest/components/ui-components/ReviewCard";
-import { useRouter } from "next/router";
 import NavBar from "gametest/components/navbar/Navbar";
-import { User } from "@prisma/client";
+import type { User } from "@prisma/client";
 import HomePage from "gametest/components/home/HomePage";
 
 const Home: NextPage = () => {
-  const router = useRouter();
   const { data: userSession } = useSession()
 
   const { data: reviewUserData } = api.review.getFromUser.useQuery({ userId: userSession?.user.id ?? '' })

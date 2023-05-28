@@ -1,12 +1,11 @@
-import { User } from "@prisma/client";
-import { api } from "gametest/utils/api";
+import type { User } from "@prisma/client";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
 const NavBar = ({user} : {user: User | undefined}) => {
 
-  const { data: userSession, status} = useSession()
+  const { data: userSession } = useSession()
 
     if(!user){
         return(
@@ -54,9 +53,9 @@ const PageName = ({}) => {
     return(
         <>
          <div className="flex flex-row items-center justify-center gap-4 m-4">
-            <h1 onClick={() => goToLink("/")} className="text-[#2e026d] font-extrabold hover:cursor-pointer">| HOME </h1>
-            <h1 onClick={() => goToLink("/reviews/create")} className="text-[#2e026d] font-extrabold hover:cursor-pointer">| NUEVA RESEÑA </h1>
-            <h1 onClick={() => goToLink('/profile')} className="text-[#2e026d] font-extrabold hover:cursor-pointer">| MI PERFIL </h1>
+            <h1 onClick={() => void goToLink("/").catch((err) => console.log(err))} className="text-[#2e026d] font-extrabold hover:cursor-pointer">| HOME </h1>
+            <h1 onClick={() => void goToLink("/reviews/create").catch((err) => console.log(err))} className="text-[#2e026d] font-extrabold hover:cursor-pointer">| NUEVA RESEÑA </h1>
+            <h1 onClick={() => void goToLink('/profile').catch((err) => console.log(err))} className="text-[#2e026d] font-extrabold hover:cursor-pointer">| MI PERFIL </h1>
          </div>
         </>
     )
