@@ -34,5 +34,34 @@ export const reviewRouter = createTRPCRouter({
           game: true
         }
       })
+    }),
+  create: protectedProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        body: z.string(),
+        date:   z.date(),
+        time: z.number(),
+        userId: z.string(),
+        gameId: z.string()
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      const {userId, gameId, ...data} = input
+      return ctx.prisma.review.create({
+        data: {
+          ...data,
+          user: {
+            connect: {
+              id: userId
+            }
+          },
+          game: {
+            connect: {
+              id: gameId
+            }
+          }
+        }
+      })
     })
 });
