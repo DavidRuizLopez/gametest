@@ -1,8 +1,6 @@
 import { api } from "gametest/utils/api";
 import { signIn, useSession } from "next-auth/react";
 import ReviewCard from "../ui-components/ReviewCard";
-import { User } from "@prisma/client";
-
 
 const ListReview = () => {
     const { data: userSession, status} = useSession()

@@ -1,8 +1,6 @@
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 
-import { api } from "gametest/utils/api";
-import ReviewCard from "gametest/components/ui-components/ReviewCard";
 import NavBar from "gametest/components/navbar/Navbar";
 import type { User } from "@prisma/client";
 import HomePage from "gametest/components/home/HomePage";
