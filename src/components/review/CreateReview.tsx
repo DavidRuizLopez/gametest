@@ -51,7 +51,7 @@ const CreateReview = () => {
             <h1 className="text-5xl font-extrabold tracking-tight py-6 my-10 text-[hsl(280,100%,70%)]"> 
                 Crear nueva Review
             </h1>
-            <div className="drop-shadow flex flex-col gap-10 w-10/12 shadow-[#2e026d] shadow-inner bg-white p-10 rounded-xl items-center">
+            <div className="drop-shadow flex flex-col gap-10 w-10/12 shadow-[#2e026d] shadow-inner bg-white p-10 mb-10 rounded-xl items-center">
                 <TextField className="w-8/12"
                     id="title" 
                     label="Título" 
@@ -92,7 +92,7 @@ const CreateReview = () => {
                         Enviar
                 </button>
             </div>
-        </main>   
+        </main>
     )
 }
 
