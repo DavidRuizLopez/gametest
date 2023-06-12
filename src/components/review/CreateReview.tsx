@@ -70,22 +70,27 @@ const CreateReview = () => {
                     minRows={6}
                     value={descriptionValue}
                     onChange={(val) => setDescriptionValue(val.target.value)} />
-                <TextField className="w-6/12"
-                    id="time"
-                    label="Tiempo de juego"
-                    required={true}
-                    variant="standard"
-                    value={timeValue}
-                    type="number"
-                    onChange={(val) => setTimeValue(val.target.value)} />
-                <Rating
-                    name="Puntuacion"
-                    value={scoreValue}
-                    onChange={(event, newValue) => {
-                        setScoreValue(newValue);
-                    }}
-                    precision={0.5}
-                />
+                <div className="flex flex-row w-8/12">
+                    <TextField className="w-1/2"
+                        id="time"
+                        label="Tiempo de juego"
+                        required={true}
+                        variant="standard"
+                        value={timeValue}
+                        type="number"
+                        onChange={(val) => setTimeValue(val.target.value)} />
+                    <div className="flex flex-row items-end justify-end w-1/2">
+                        <p>Puntuación: </p>
+                        <Rating
+                            name="Puntuacion"
+                            value={scoreValue}
+                            onChange={(event, newValue) => {
+                                setScoreValue(newValue);
+                            }}
+                            precision={0.5} />
+                    </div>
+                </div>
+                
                 <Autocomplete
                     value={game}
                     onChange={(event, newValue: optionsGames | null) => {
