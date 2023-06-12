@@ -44,7 +44,8 @@ export const reviewRouter = createTRPCRouter({
         date:   z.date(),
         time: z.number(),
         userId: z.string(),
-        gameId: z.string()
+        gameId: z.string(),
+        score: z.number().optional()
       })
     )
     .mutation(({ ctx, input }) => {
@@ -62,6 +63,25 @@ export const reviewRouter = createTRPCRouter({
               id: gameId
             }
           }
+        }
+      })
+    }),
+  update: protectedProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        body: z.string(),
+        time: z.number(),
+        score: z.number().optional(),
+        id: z.string()
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      const {...data} = input
+      return ctx.prisma.review.update({
+        where: {id: input.id},
+        data: {
+          ...data
         }
       })
     })
