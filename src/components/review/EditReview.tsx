@@ -2,32 +2,19 @@ import { api } from "gametest/utils/api";
 import { useSession } from "next-auth/react";
 import TextField from '@mui/material/TextField';
 import { useState } from "react";
-import { Autocomplete, Rating } from "@mui/material";
+import { Rating } from "@mui/material";
 import { AuthShowcase } from "../navbar/Navbar";
 import { useRouter } from "next/router";
+import type { Review } from "@prisma/client";
 
-interface optionsGames {
-    label: string;
-    id: string;
-}
-
-const CreateReview = () => {
+const EditReview = ({review}: {review: Review}) => {
     const router = useRouter();
-    const createReviewMutaton = api.review.create.useMutation();
-    const { data: listGames } = api.game.getAll.useQuery();
+    const createReviewMutaton = api.review.update.useMutation();
 
-    const listGamesStrings = listGames?.map((game) => {
-        return {
-            label: game.name,
-            id: game.id
-        }
-    })
-
-    const [titleValue, setTitleValue] = useState<string>();
-    const [descriptionValue, setDescriptionValue] = useState<string>();
-    const [timeValue, setTimeValue] = useState<string>();
-    const [scoreValue, setScoreValue] = useState<number | null | undefined>();
-    const [game, setGame] = useState<optionsGames | null>();
+    const [titleValue, setTitleValue] = useState<string>(review.title);
+    const [descriptionValue, setDescriptionValue] = useState<string>(review.body);
+    const [timeValue, setTimeValue] = useState<string>(review.time ? review.time?.toString() : '');
+    const [scoreValue, setScoreValue] = useState<number | null | undefined>(review.score ? review.score / 2 : 0);
 
     const user = useSession().data?.user;
 
@@ -35,15 +22,13 @@ const CreateReview = () => {
 
     const createReview = async () => {
         await createReviewMutaton.mutateAsync({
+            id: review.id,
             title: titleValue ?? '',
             time: parseInt(timeValue ?? ''),
-            userId: user?.id,
-            gameId: game?.id ?? '',
             body: descriptionValue ?? '',
-            date: new Date(),
             score: scoreValue ? scoreValue * 2 : undefined
         })
-            .then((val) => alert(`La review ${val.title} ha sido creada`))
+            .then((val) => alert(`La review ${val.title} ha sido actualizada`))
             .catch((err) => console.log(err))
             .finally(() => { return void router.push("/profile").catch((err) => console.log(err)) })
     }
@@ -70,37 +55,22 @@ const CreateReview = () => {
                     minRows={6}
                     value={descriptionValue}
                     onChange={(val) => setDescriptionValue(val.target.value)} />
-                <div className="flex flex-row w-8/12">
-                    <TextField className="w-1/2"
-                        id="time"
-                        label="Tiempo de juego"
-                        required={true}
-                        variant="standard"
-                        value={timeValue}
-                        type="number"
-                        onChange={(val) => setTimeValue(val.target.value)} />
-                    <div className="flex flex-row items-end justify-end w-1/2">
-                        <p>Puntuación: </p>
-                        <Rating
-                            name="Puntuacion"
-                            value={scoreValue}
-                            onChange={(event, newValue) => {
-                                setScoreValue(newValue);
-                            }}
-                            precision={0.5} />
-                    </div>
-                </div>
-                
-                <Autocomplete
-                    value={game}
-                    onChange={(event, newValue: optionsGames | null) => {
-                        setGame(newValue);
+                <TextField className="w-6/12"
+                    id="time"
+                    label="Tiempo de juego"
+                    required={true}
+                    variant="standard"
+                    value={timeValue}
+                    type="number"
+                    onChange={(val) => setTimeValue(val.target.value)} />
+                <Rating
+                    name="Puntuacion"
+                    value={scoreValue}
+                    onChange={(event, newValue) => {
+                        setScoreValue(newValue);
                     }}
-                    id="controllable-states"
-                    options={listGamesStrings ?? [{ label: '', id: '' }]}
-                    getOptionLabel={(option) => option.label}
-                    sx={{ width: 570 }}
-                    renderInput={(params) => <TextField {...params} label="Seleccione juego" />} />
+                    precision={0.5}
+                />
                 <button
                     className="rounded-full bg-[#6a00ff] px-10 py-3 m-4 font-semibold text-white no-underline hover:bg-[#2e026d]/40 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110"
                     onClick={() => void createReview().catch((err) => console.log(err))} >
@@ -111,4 +81,4 @@ const CreateReview = () => {
     )
 }
 
-export default CreateReview;
+export default EditReview;
