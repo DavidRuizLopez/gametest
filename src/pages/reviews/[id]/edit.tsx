@@ -22,10 +22,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     const review = await prisma.review.findUniqueOrThrow({
         where: {id: id as string},
-        include: {
-            votes: true,
-            user: true
-        }
     })
 
     return {
