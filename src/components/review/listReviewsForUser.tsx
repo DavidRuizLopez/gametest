@@ -1,7 +1,7 @@
 import { api } from "gametest/utils/api";
 import { signIn, useSession } from "next-auth/react";
 import ReviewCard from "../ui-components/ReviewCard";
-import { Review } from "@prisma/client";
+import type { Review } from "@prisma/client";
 
 
 const ListReviewForUser = () => {
@@ -9,7 +9,7 @@ const ListReviewForUser = () => {
     const {data: reviewsData} = api.review.getFromUser.useQuery({ user: userSession?.user.id ?? ''})
 
     const listOfReviews = reviewsData?.sort((a: Review, b: Review) => {
-        return b.date?.getTime()! - a.date?.getTime()!
+        return (b.date?.getTime() ?? 0) - (a.date?.getTime() ?? 0)
     })
 
     if(status === 'unauthenticated') signIn().catch((err) => console.log(err))
